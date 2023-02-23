@@ -1,4 +1,11 @@
 {
+  "resource": "/",
+  "path": "/",
+  "httpMethod": "GET",
+  "requestContext": {
+    "resourcePath": "/",
+    "httpMethod": "GET"
+  },
   "headers": {
     "Content-Type": ""
   }
