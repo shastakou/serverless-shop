@@ -1,3 +1,4 @@
+import * as createHttpError from 'http-errors';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
@@ -8,6 +9,10 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<void> = async (
 ) => {
   const { id } = event.pathParameters;
   const product = await findProductById(id);
+
+  if (!product) {
+    throw createHttpError.NotFound('Product is not found');
+  }
 
   return formatJSONResponse(product);
 };
