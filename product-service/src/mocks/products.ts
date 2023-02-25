@@ -1,4 +1,6 @@
-const products = [
+import { Product, ProductsList } from '../types/api-types';
+
+const products: ProductsList = [
   {
     description: 'Short Product Description',
     id: '7567ec4b-b10c-48c5-9345-fc73c48a80aa',
@@ -37,11 +39,11 @@ const products = [
   },
 ];
 
-export async function getProducts(): Promise<typeof products> {
+export async function getProducts(): Promise<ProductsList> {
   return Promise.resolve(products);
 }
 
-export async function findProductById(id: string): Promise<typeof products[0]> {
+export async function findProductById(id: string): Promise<Product> {
   const product = products.find((p) => p.id === id);
   return Promise.resolve(product);
 }

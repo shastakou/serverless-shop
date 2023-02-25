@@ -1,14 +1,25 @@
-import { AWS } from '@serverless/typescript';
 import { handlerPath } from '@libs/handlerResolver';
+import { AWSFunctionConfig } from '../../types/type-utils';
 
-export const getProductById: AWS['functions'][''] = {
+export const getProductById: AWSFunctionConfig = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
-      http: {
+      httpApi: {
         method: 'get',
-        path: 'products/{id}',
-        cors: true,
+        path: '/products/{id}',
+
+        // swagger definitions
+        responseData: {
+          200: {
+            description: 'Product',
+            bodyType: 'Product',
+          },
+          404: {
+            description: 'Not found',
+            bodyType: 'string',
+          },
+        },
       },
     },
   ],
