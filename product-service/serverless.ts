@@ -3,14 +3,15 @@ import type { AWS } from '@serverless/typescript';
 // functions
 import { getProductById } from '@functions/getProductById';
 import { getProductsList } from '@functions/getProductsList';
+import { createProduct } from '@functions/createProduct';
 
 // resources
-import { ProductsTable } from '@resources/productsTable';
-import { StocksTable } from '@resources/stocksTable';
+import { ProductsTable } from '@resources/productsTable.resource';
+import { StocksTable } from '@resources/stocksTable.resource';
 
 // iam policies
-import { ProductsTableIAM } from '@iam/productsTableIAM';
-import { StocksTableIAM } from '@iam/stocksTableIAM';
+import { ProductsTableIAM } from '@iam/productsTable.iam';
+import { StocksTableIAM } from '@iam/stocksTable.iam';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -45,7 +46,7 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  functions: { getProductsList, getProductById },
+  functions: { getProductsList, getProductById, createProduct },
   package: { individually: true },
   resources: {
     Resources: {

@@ -22,7 +22,43 @@
           "200": {
             "description": "List of products",
             "schema": {
-              "$ref": "#/definitions/ProductsList"
+              "$ref": "#/definitions/ProductsDto"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "createProduct",
+        "description": "",
+        "operationId": "createProduct.post./products",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body required in the request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateProductDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Product created",
+            "schema": {
+              "$ref": "#/definitions/ProductDto"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/string"
             }
           }
         }
@@ -51,7 +87,7 @@
           "200": {
             "description": "Product",
             "schema": {
-              "$ref": "#/definitions/Product"
+              "$ref": "#/definitions/ProductDto"
             }
           },
           "404": {
@@ -65,42 +101,68 @@
     }
   },
   "definitions": {
-    "Product": {
+    "ProductDto": {
       "properties": {
         "id": {
-          "title": "Product.id",
-          "type": "string"
-        },
-        "title": {
-          "title": "Product.title",
+          "title": "ProductDto.id",
           "type": "string"
         },
         "description": {
-          "title": "Product.description",
+          "title": "ProductDto.description",
           "type": "string"
         },
         "price": {
-          "title": "Product.price",
+          "title": "ProductDto.price",
+          "type": "number"
+        },
+        "count": {
+          "title": "ProductDto.count",
           "type": "number"
         }
       },
       "required": [
         "id",
+        "price"
+      ],
+      "additionalProperties": false,
+      "title": "ProductDto",
+      "type": "object"
+    },
+    "CreateProductDto": {
+      "properties": {
+        "title": {
+          "title": "CreateProductDto.title",
+          "type": "string"
+        },
+        "description": {
+          "title": "CreateProductDto.description",
+          "type": "string"
+        },
+        "price": {
+          "title": "CreateProductDto.price",
+          "type": "number"
+        },
+        "count": {
+          "title": "CreateProductDto.count",
+          "type": "number"
+        }
+      },
+      "required": [
         "title",
         "price"
       ],
       "additionalProperties": false,
-      "title": "Product",
+      "title": "CreateProductDto",
       "type": "object"
     },
-    "Stock": {
+    "StockDto": {
       "properties": {
         "product_id": {
-          "title": "Stock.product_id",
+          "title": "StockDto.product_id",
           "type": "string"
         },
         "count": {
-          "title": "Stock.count",
+          "title": "StockDto.count",
           "type": "number"
         }
       },
@@ -109,28 +171,15 @@
         "count"
       ],
       "additionalProperties": false,
-      "title": "Stock",
+      "title": "StockDto",
       "type": "object"
     },
-    "ProductsList": {
+    "ProductsDto": {
       "items": {
-        "allOf": [
-          {
-            "$ref": "#/definitions/Product"
-          },
-          {
-            "properties": {
-              "count": {
-                "title": "count",
-                "type": "number"
-              }
-            },
-            "additionalProperties": false,
-            "type": "object"
-          }
-        ]
+        "$ref": "#/definitions/ProductDto",
+        "title": "ProductsDto.[]"
       },
-      "title": "ProductsList",
+      "title": "ProductsDto.[]",
       "type": "array"
     }
   },
