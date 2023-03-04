@@ -26,6 +26,8 @@
     "@middy/http-event-normalizer": "^4.2.5",
     "@middy/http-header-normalizer": "^4.2.5",
     "@middy/http-json-body-parser": "^3.4.0",
+    "@middy/http-security-headers": "^4.2.6",
+    "@middy/input-output-logger": "^4.2.6",
     "http-errors": "^2.0.0",
     "uuid": "^9.0.0"
   },

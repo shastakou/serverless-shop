@@ -9,9 +9,9 @@ export const getProductsList: ValidatedEventAPIGatewayProxyEvent<
   void
 > = async () => {
   const products = await getProductsFromDb();
-  const productsInStock = await getProductsInStock(products);
+  const productsList = await getProductsWithStockCount(products);
 
-  return formatJSONResponse(productsInStock);
+  return formatJSONResponse(productsList);
 };
 
 async function getProductsFromDb(): Promise<Product[]> {
@@ -20,31 +20,32 @@ async function getProductsFromDb(): Promise<Product[]> {
       TableName: process.env.PRODUCTS_TABLE,
     })
   );
-  return data.Items as Product[];
+  return (data.Items ?? []) as Product[];
 }
 
-async function getStockFromDb(product_id: string): Promise<Stock> {
+async function getStockFromDb(productId: string): Promise<Stock> {
   const data = await ddbDocumentClient.send(
     new GetCommand({
       TableName: process.env.STOCKS_TABLE,
-      Key: { product_id },
+      Key: { product_id: productId },
     })
   );
   return data.Item as Stock;
 }
 
-async function getProductsInStock(products: Product[]): Promise<ProductsList> {
+async function getProductsWithStockCount(
+  products: Product[]
+): Promise<ProductsList> {
   const productsInStock = [];
   for (const product of products) {
     try {
       const stock = await getStockFromDb(product.id);
-      productsInStock.push({ ...product, count: stock.count });
+      productsInStock.push({ ...product, count: stock?.count });
     } catch (error) {
       console.error(error);
       productsInStock.push(product);
     }
   }
-
   return productsInStock;
 }
 

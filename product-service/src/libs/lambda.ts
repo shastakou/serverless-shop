@@ -5,6 +5,8 @@ import httpHeaderNormalizer from '@middy/http-header-normalizer';
 import httpEventNormalizer from '@middy/http-event-normalizer';
 import httpErrorHandler from '@middy/http-error-handler';
 import cors from '@middy/http-cors';
+import httpSecurityHeaders from '@middy/http-security-headers';
+import inputOutputLogger from '@middy/input-output-logger';
 
 export const middyfy = (handler: Handler<any>) => {
   return middy(handler)
@@ -12,5 +14,7 @@ export const middyfy = (handler: Handler<any>) => {
     .use(httpEventNormalizer())
     .use(middyJsonBodyParser())
     .use(cors())
+    .use(httpSecurityHeaders())
+    .use(inputOutputLogger({ awsContext: true }))
     .use(httpErrorHandler());
 };
