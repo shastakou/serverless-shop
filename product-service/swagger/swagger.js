@@ -87,19 +87,50 @@
       "required": [
         "id",
         "title",
-        "description",
         "price"
       ],
       "additionalProperties": false,
       "title": "Product",
       "type": "object"
     },
+    "Stock": {
+      "properties": {
+        "product_id": {
+          "title": "Stock.product_id",
+          "type": "string"
+        },
+        "count": {
+          "title": "Stock.count",
+          "type": "number"
+        }
+      },
+      "required": [
+        "product_id",
+        "count"
+      ],
+      "additionalProperties": false,
+      "title": "Stock",
+      "type": "object"
+    },
     "ProductsList": {
       "items": {
-        "$ref": "#/definitions/Product",
-        "title": "ProductsList.[]"
+        "allOf": [
+          {
+            "$ref": "#/definitions/Product"
+          },
+          {
+            "properties": {
+              "count": {
+                "title": "count",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "type": "object"
+          }
+        ]
       },
-      "title": "ProductsList.[]",
+      "title": "ProductsList",
       "type": "array"
     }
   },

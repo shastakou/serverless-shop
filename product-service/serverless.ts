@@ -8,13 +8,17 @@ import { getProductsList } from '@functions/getProductsList';
 import { ProductsTable } from '@resources/productsTable';
 import { StocksTable } from '@resources/stocksTable';
 
+// iam policies
+import { ProductsTableIAM } from '@iam/productsTableIAM';
+import { StocksTableIAM } from '@iam/stocksTableIAM';
+
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
   plugins: ['serverless-auto-swagger', 'serverless-esbuild'],
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs18.x',
     region: 'eu-west-1',
     deploymentMethod: 'direct',
     apiGateway: {
@@ -28,11 +32,17 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      REGION: '${self:custom.region}',
       PRODUCTS_TABLE: '${self:custom.productsTable.name}',
       STOCKS_TABLE: '${self:custom.stocksTable.name}',
     },
     httpApi: {
       cors: true,
+    },
+    iam: {
+      role: {
+        statements: [ProductsTableIAM, StocksTableIAM],
+      },
     },
   },
   functions: { getProductsList, getProductById },
@@ -44,12 +54,13 @@ const serverlessConfiguration: AWS = {
     },
   },
   custom: {
+    region: '${opt:region, self:provider.region}',
     esbuild: {
       bundle: true,
       minify: false,
       sourcemap: true,
       exclude: ['aws-sdk'],
-      target: 'node14',
+      target: 'node18',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
