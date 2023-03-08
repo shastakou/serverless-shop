@@ -4,6 +4,7 @@ import {
   GetCommand,
   PutCommand,
   ScanCommand,
+  TransactWriteCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { ProductDto, StockDto } from '../../types/api-types';
 
@@ -53,6 +54,30 @@ export async function putProduct(product: ProductDto): Promise<ProductDto> {
     })
   );
   return product;
+}
+
+export async function transactPutProduct(
+  product: ProductDto,
+  stock: StockDto
+): Promise<void> {
+  await ddbDocumentClient.send(
+    new TransactWriteCommand({
+      TransactItems: [
+        {
+          Put: {
+            TableName: PRODUCTS_TABLE,
+            Item: product,
+          },
+        },
+        {
+          Put: {
+            TableName: STOCKS_TABLE,
+            Item: stock,
+          },
+        },
+      ],
+    })
+  );
 }
 
 export async function getStock(productId: string): Promise<StockDto> {

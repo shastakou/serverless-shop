@@ -1,30 +1,32 @@
+import { v4 as uuid } from 'uuid';
 import validator from '@middy/validator';
 import { transpileSchema } from '@middy/validator/transpile';
-import { v4 as uuid } from 'uuid';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
-import { putProduct, putStock } from '@libs/services/dbDocumentClient.service';
+import { transactPutProduct } from '@libs/services/dbDocumentClient.service';
 import { createProductSchema } from '@libs/schemas/createProduct.schema';
+import { ProductDto, StockDto } from '../../types/api-types';
 
 export const createProduct: ValidatedEventAPIGatewayProxyEvent<
   typeof createProductSchema
 > = async (event) => {
-  const { body } = event;
-  const { count = 0, ...product } = body;
+  const { count = 0, ...product } = event.body;
 
-  const createdProduct = await putProduct({
+  const productToSave: ProductDto = {
     id: uuid(),
     ...product,
-  });
-  const stock = await putStock({
-    product_id: createdProduct.id,
+  };
+  const stockToSave: StockDto = {
+    product_id: productToSave.id,
     count,
-  });
+  };
+
+  await transactPutProduct(productToSave, stockToSave);
 
   return formatJSONResponse({
-    ...createdProduct,
-    count: stock.count,
+    ...productToSave,
+    count,
   });
 };
 
