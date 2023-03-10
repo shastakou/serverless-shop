@@ -2,7 +2,7 @@
             module.exports = {
   "swagger": "2.0",
   "info": {
-    "title": "product-service",
+    "title": "products service",
     "version": "1"
   },
   "paths": {
@@ -22,7 +22,43 @@
           "200": {
             "description": "List of products",
             "schema": {
-              "$ref": "#/definitions/ProductsList"
+              "$ref": "#/definitions/ProductsDto"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "createProduct",
+        "description": "",
+        "operationId": "createProduct.post./products",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body required in the request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateProductDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Product created",
+            "schema": {
+              "$ref": "#/definitions/ProductDto"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/string"
             }
           }
         }
@@ -51,7 +87,7 @@
           "200": {
             "description": "Product",
             "schema": {
-              "$ref": "#/definitions/Product"
+              "$ref": "#/definitions/ProductDto"
             }
           },
           "404": {
@@ -65,41 +101,85 @@
     }
   },
   "definitions": {
-    "Product": {
+    "ProductDto": {
       "properties": {
         "id": {
-          "title": "Product.id",
-          "type": "string"
-        },
-        "title": {
-          "title": "Product.title",
+          "title": "ProductDto.id",
           "type": "string"
         },
         "description": {
-          "title": "Product.description",
+          "title": "ProductDto.description",
           "type": "string"
         },
         "price": {
-          "title": "Product.price",
+          "title": "ProductDto.price",
+          "type": "number"
+        },
+        "count": {
+          "title": "ProductDto.count",
           "type": "number"
         }
       },
       "required": [
         "id",
-        "title",
-        "description",
         "price"
       ],
       "additionalProperties": false,
-      "title": "Product",
+      "title": "ProductDto",
       "type": "object"
     },
-    "ProductsList": {
-      "items": {
-        "$ref": "#/definitions/Product",
-        "title": "ProductsList.[]"
+    "CreateProductDto": {
+      "properties": {
+        "title": {
+          "title": "CreateProductDto.title",
+          "type": "string"
+        },
+        "description": {
+          "title": "CreateProductDto.description",
+          "type": "string"
+        },
+        "price": {
+          "title": "CreateProductDto.price",
+          "type": "number"
+        },
+        "count": {
+          "title": "CreateProductDto.count",
+          "type": "number"
+        }
       },
-      "title": "ProductsList.[]",
+      "required": [
+        "title",
+        "price"
+      ],
+      "additionalProperties": false,
+      "title": "CreateProductDto",
+      "type": "object"
+    },
+    "StockDto": {
+      "properties": {
+        "product_id": {
+          "title": "StockDto.product_id",
+          "type": "string"
+        },
+        "count": {
+          "title": "StockDto.count",
+          "type": "number"
+        }
+      },
+      "required": [
+        "product_id",
+        "count"
+      ],
+      "additionalProperties": false,
+      "title": "StockDto",
+      "type": "object"
+    },
+    "ProductsDto": {
+      "items": {
+        "$ref": "#/definitions/ProductDto",
+        "title": "ProductsDto.[]"
+      },
+      "title": "ProductsDto.[]",
       "type": "array"
     }
   },

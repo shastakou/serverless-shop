@@ -1,8 +1,20 @@
-export interface Product {
+export interface ProductDto extends CreateProductDto {
   id: string;
-  title: string;
-  description: string;
+  description?: string;
   price: number;
+  count?: number;
 }
 
-export type ProductsList = Product[];
+export interface CreateProductDto {
+  title: string;
+  description?: string;
+  price: number;
+  count?: number;
+}
+
+export interface StockDto {
+  product_id: string;
+  count: number;
+}
+
+export type ProductsDto = ProductDto[];

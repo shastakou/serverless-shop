@@ -13,7 +13,7 @@ export const getProductsList: AWSFunctionConfig = {
         responseData: {
           200: {
             description: 'List of products',
-            bodyType: 'ProductsList',
+            bodyType: 'ProductsDto',
           },
         },
       },

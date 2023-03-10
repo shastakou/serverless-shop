@@ -1,22 +1,23 @@
 import { handlerPath } from '@libs/handlerResolver';
 import { AWSFunctionConfig } from '../../types/type-utils';
 
-export const getProductById: AWSFunctionConfig = {
+export const createProduct: AWSFunctionConfig = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
       httpApi: {
-        method: 'get',
-        path: '/products/{id}',
+        method: 'post',
+        path: '/products',
 
         // swagger definitions
+        bodyType: 'CreateProductDto',
         responseData: {
-          200: {
-            description: 'Product',
+          201: {
+            description: 'Product created',
             bodyType: 'ProductDto',
           },
-          404: {
-            description: 'Not found',
+          400: {
+            description: 'Bad request',
             bodyType: 'string',
           },
         },
