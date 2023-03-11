@@ -7,12 +7,15 @@ export const importProductsFile: AWS['functions'][''] = {
     {
       http: {
         method: 'get',
-        path: 'import/{fileName}',
-        // request: {
-        //   schemas: {
-        //     'application/json': schema,
-        //   },
-        // },
+        path: 'import',
+        cors: true,
+        request: {
+          parameters: {
+            querystrings: {
+              name: { required: true },
+            },
+          },
+        },
       },
     },
   ],

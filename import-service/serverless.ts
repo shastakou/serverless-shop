@@ -1,6 +1,13 @@
 import type { AWS } from '@serverless/typescript';
 
+// functions
 import { importProductsFile } from '@functions/importProductsFile';
+
+// resources
+import { ProductsBucket } from '@resources/productsBucket.resource';
+
+// iam policies
+import { ProductsBucketIAM } from '@iam/productsBucket.iam';
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
@@ -22,11 +29,28 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      REGION: '${self:custom.region}',
+      BUCKET: '${self:custom.productsBucket.name}',
+    },
+    iam: {
+      role: {
+        statements: [ProductsBucketIAM],
+      },
     },
   },
   functions: { importProductsFile },
   package: { individually: true },
+  resources: {
+    Resources: {
+      ProductsBucket,
+    },
+  },
   custom: {
+    region: '${opt:region, self:provider.region}',
+    productsBucket: {
+      name: { Ref: 'ProductsBucket' },
+      arn: { 'Fn::GetAtt': ['ProductsBucket', 'Arn'] },
+    },
     esbuild: {
       bundle: true,
       minify: false,

@@ -3,7 +3,7 @@ import middy from '@middy/core';
 import middyJsonBodyParser from '@middy/http-json-body-parser';
 import httpHeaderNormalizer from '@middy/http-header-normalizer';
 import httpEventNormalizer from '@middy/http-event-normalizer';
-import httpErrorHandler from '@middy/http-error-handler';
+import httpErrorHandler from 'middy-middleware-json-error-handler';
 import cors from '@middy/http-cors';
 import httpSecurityHeaders from '@middy/http-security-headers';
 import inputOutputLogger from '@middy/input-output-logger';
