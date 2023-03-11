@@ -1,26 +1,19 @@
 import { extname } from 'node:path';
+import { APIGatewayProxyEvent } from 'aws-lambda';
 import { BadRequest } from 'http-errors';
-import { formatJSONResponse } from '@libs/api-gateway';
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway';
-import { middyfy } from '@libs/lambda';
+import { formatJSONResponse } from '@libs/utils/apiGateway';
+import { middyfy } from '@libs/utils/lambdaMiddleware';
 import { createPresignedUrl } from '@libs/services/s3Client.service';
+import { BUCKET_UPLOADED_PREFIX } from '@libs/constants';
 
-const importProductsFile: ValidatedEventAPIGatewayProxyEvent<void> = async (
-  event
-) => {
+const importProductsFile = async (event: APIGatewayProxyEvent) => {
   const { name } = event.queryStringParameters;
-  const region = process.env.REGION;
-  const bucket = process.env.BUCKET;
 
   if (extname(name) !== '.csv') {
     throw new BadRequest('The file should be in [.csv] format');
   }
 
-  const url = await createPresignedUrl({
-    region,
-    bucket,
-    key: ['uploaded', name].join('/'),
-  });
+  const url = await createPresignedUrl(BUCKET_UPLOADED_PREFIX + name);
 
   return formatJSONResponse({ url });
 };

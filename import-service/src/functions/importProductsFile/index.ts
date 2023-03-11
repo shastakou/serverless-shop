@@ -1,5 +1,5 @@
 import { AWS } from '@serverless/typescript';
-import { handlerPath } from '@libs/handler-resolver';
+import { handlerPath } from '@libs/utils/handlerResolver';
 
 export const importProductsFile: AWS['functions'][''] = {
   handler: `${handlerPath(__dirname)}/handler.main`,

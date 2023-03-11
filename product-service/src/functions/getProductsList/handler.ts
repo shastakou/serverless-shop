@@ -1,6 +1,6 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
-import { middyfy } from '@libs/lambda';
+import { middyfy } from '@libs/lambdaMiddleware';
 import { getProductsWithStockCount } from '@libs/services/dbDocumentClient.service';
 
 export const getProductsList: ValidatedEventAPIGatewayProxyEvent<

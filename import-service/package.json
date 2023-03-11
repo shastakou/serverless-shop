@@ -20,6 +20,7 @@
     "@middy/http-cors": "^3.4.0",
     "@middy/http-event-normalizer": "^4.2.5",
     "@middy/http-header-normalizer": "^4.2.5",
+    "csv-parser": "^3.0.0",
     "http-errors": "^2.0.0",
     "middy-middleware-json-error-handler": "^3.0.0"
   },

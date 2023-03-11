@@ -3,7 +3,7 @@ import validator from '@middy/validator';
 import { transpileSchema } from '@middy/validator/transpile';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
-import { middyfy } from '@libs/lambda';
+import { middyfy } from '@libs/lambdaMiddleware';
 import { transactPutProduct } from '@libs/services/dbDocumentClient.service';
 import { createProductSchema } from './schema';
 import { ProductDto, StockDto } from '../../types/api-types';

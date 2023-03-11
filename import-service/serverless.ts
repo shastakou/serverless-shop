@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 
 // functions
 import { importProductsFile } from '@functions/importProductsFile';
+import { importFileParser } from '@functions/importFileParser';
 
 // resources
 import { ProductsBucket } from '@resources/productsBucket.resource';
@@ -38,7 +39,7 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  functions: { importProductsFile },
+  functions: { importProductsFile, importFileParser },
   package: { individually: true },
   resources: {
     Resources: {
