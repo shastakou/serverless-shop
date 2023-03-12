@@ -17,7 +17,6 @@ export const getProductById: AWSFunctionConfig = {
           },
           404: {
             description: 'Not found',
-            bodyType: 'string',
           },
         },
       },

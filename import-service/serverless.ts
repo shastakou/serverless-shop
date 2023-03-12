@@ -13,7 +13,7 @@ import { ProductsBucketIAM } from '@iam/productsBucket.iam';
 const serverlessConfiguration: AWS = {
   service: 'import-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild'],
+  plugins: ['serverless-auto-swagger', 'serverless-esbuild'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -61,6 +61,10 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
+    },
+    autoswagger: {
+      title: 'import service',
+      apiType: 'http',
     },
   },
 };

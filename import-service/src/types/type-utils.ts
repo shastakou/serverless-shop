@@ -2,8 +2,16 @@ import { AWS } from '@serverless/typescript';
 
 export type AWSFunctionConfig = AWS['functions'][''] & {
   events: {
-    httpApi: {
-      bodyType?: 'CreateProductDto';
+    http: {
+      queryStringParameters: Record<
+        string,
+        {
+          required: boolean;
+          type: any;
+          description?: string;
+        }
+      >;
+
       responseData: Record<
         number,
         {

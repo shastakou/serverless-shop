@@ -18,7 +18,6 @@ export const createProduct: AWSFunctionConfig = {
           },
           400: {
             description: 'Bad request',
-            bodyType: 'string',
           },
         },
       },

@@ -56,10 +56,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/string"
-            }
+            "description": "Bad request"
           }
         }
       }
@@ -91,10 +88,7 @@
             }
           },
           "404": {
-            "description": "Not found",
-            "schema": {
-              "$ref": "#/definitions/string"
-            }
+            "description": "Not found"
           }
         }
       }
