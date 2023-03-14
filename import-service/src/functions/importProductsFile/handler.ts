@@ -6,7 +6,7 @@ import { middyfy } from '@libs/utils/lambdaMiddleware';
 import { createPresignedUrl } from '@libs/services/s3Client.service';
 import { BUCKET_UPLOADED_PREFIX } from '@libs/constants';
 
-const importProductsFile = async (event: APIGatewayProxyEvent) => {
+export const importProductsFile = async (event: APIGatewayProxyEvent) => {
   const { name } = event.queryStringParameters;
 
   if (extname(name) !== '.csv') {
