@@ -7,7 +7,7 @@ import {
   deleteObject,
   getObject,
 } from '@libs/services/s3Client.service';
-import { BUCKET_PARSED_PREFIX } from '@libs/constants';
+import { BUCKET, BUCKET_PARSED_PREFIX } from '@libs/constants';
 
 export const importFileParser = async (event: S3Event) => {
   const s3Records = event.Records ?? [];
@@ -28,8 +28,10 @@ export const importFileParser = async (event: S3Event) => {
         }
       });
 
-      const copiedObjectKey = BUCKET_PARSED_PREFIX + objectKey.split('/').pop();
-      await copyObject(objectKey, copiedObjectKey);
+      await copyObject(
+        BUCKET + '/' + objectKey,
+        BUCKET_PARSED_PREFIX + objectKey.split('/').pop()
+      );
 
       await deleteObject(objectKey);
     } catch (error) {

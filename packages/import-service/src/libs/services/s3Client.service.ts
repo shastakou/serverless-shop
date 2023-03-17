@@ -29,7 +29,7 @@ export async function copyObject(
 ): Promise<CopyObjectCommandOutput> {
   const command = new CopyObjectCommand({
     Bucket: BUCKET,
-    CopySource: `${BUCKET}/${sourceKey}`,
+    CopySource: sourceKey,
     Key: destinationKey,
   });
   const result = await s3Client.send(command);

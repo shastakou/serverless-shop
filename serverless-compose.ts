@@ -1,10 +1,10 @@
 module.exports = {
   services: {
     'product-service': {
-      path: './product-service',
+      path: 'packages/product-service',
     },
     'import-service': {
-      path: './import-service',
+      path: 'packages/import-service',
       dependsOn: 'product-service',
     },
   },
