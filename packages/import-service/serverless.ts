@@ -9,6 +9,7 @@ import { ProductsBucket } from '@resources/productsBucket.resource';
 
 // iam policies
 import { ProductsBucketIAM } from '@iam/productsBucket.iam';
+import { CatalogProductsQueueIAM } from '@iam/catalogProductsQueue.iam';
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
@@ -36,7 +37,7 @@ const serverlessConfiguration: AWS = {
     },
     iam: {
       role: {
-        statements: [ProductsBucketIAM],
+        statements: [ProductsBucketIAM, CatalogProductsQueueIAM],
       },
     },
   },

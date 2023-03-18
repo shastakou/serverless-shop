@@ -65,6 +65,9 @@ const serverlessConfiguration: AWS = {
       CatalogProductsQueueUrl: {
         Value: '${self:custom.catalogProductsQueue.name}',
       },
+      CatalogProductsQueueArn: {
+        Value: '${self:custom.catalogProductsQueue.arn}',
+      },
     },
   },
   custom: {

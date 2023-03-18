@@ -8,6 +8,7 @@ module.exports = {
       dependsOn: 'product-service',
       params: {
         catalogProductsQueueUrl: '${product-service.CatalogProductsQueueUrl}',
+        catalogProductsQueueArn: '${product-service.CatalogProductsQueueArn}',
       },
     },
   },

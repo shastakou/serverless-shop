@@ -1,10 +1,32 @@
 import { SQSEvent } from 'aws-lambda';
+import { v4 as uuid } from 'uuid';
+import { transactPutProduct } from '@libs/services/dbDocumentClient.service';
+import { ProductDto, StockDto, CreateProductDto } from '../../types/api-types';
 
 export const catalogBatchProcess = async (event: SQSEvent) => {
-  const products = event.Records.map(({ body }) => body);
+  let products: CreateProductDto[] = [];
 
-  for (const product of products) {
-    console.log(product);
+  try {
+    products = event.Records.map(({ body }) => JSON.parse(body));
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+
+  for (const { count, ...product } of products) {
+    const productToSave: ProductDto = {
+      id: uuid(),
+      ...product,
+    };
+    const stockToSave: StockDto = {
+      product_id: productToSave.id,
+      count,
+    };
+    try {
+      await transactPutProduct(productToSave, stockToSave);
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 
