@@ -1,6 +1,6 @@
 import { AWS } from '@serverless/typescript';
 
-export type AWSFunctionConfig = AWS['functions'][''] & {
+export type FunctionWithSwagger = AWS['functions'][''] & {
   events: {
     httpApi: {
       bodyType?: 'CreateProductDto';

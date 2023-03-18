@@ -1,7 +1,7 @@
 import { handlerPath } from '@libs/handlerResolver';
-import { AWSFunctionConfig } from '../../types/type-utils';
+import { FunctionWithSwagger } from '../../types/type-utils';
 
-export const getProductById: AWSFunctionConfig = {
+export const getProductById: FunctionWithSwagger = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {

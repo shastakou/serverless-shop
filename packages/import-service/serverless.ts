@@ -32,6 +32,7 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       REGION: '${self:custom.region}',
       BUCKET: '${self:custom.productsBucket.name}',
+      CATALOG_PRODUCTS_QUEUE_URL: '${param:catalogProductsQueueUrl}',
     },
     iam: {
       role: {

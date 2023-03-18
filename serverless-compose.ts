@@ -6,6 +6,9 @@ module.exports = {
     'import-service': {
       path: 'packages/import-service',
       dependsOn: 'product-service',
+      params: {
+        catalogProductsQueueUrl: '${product-service.CatalogProductsQueueUrl}',
+      },
     },
   },
 };

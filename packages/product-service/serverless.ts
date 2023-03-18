@@ -4,10 +4,12 @@ import type { AWS } from '@serverless/typescript';
 import { getProductById } from '@functions/getProductById';
 import { getProductsList } from '@functions/getProductsList';
 import { createProduct } from '@functions/createProduct';
+import { catalogBatchProcess } from '@functions/catalogBatchProcess';
 
 // resources
 import { ProductsTable } from '@resources/productsTable.resource';
 import { StocksTable } from '@resources/stocksTable.resource';
+import { CatalogProductsQueue } from '@resources/catalogProductsQueue.resource';
 
 // iam policies
 import { ProductsTableIAM } from '@iam/productsTable.iam';
@@ -46,12 +48,23 @@ const serverlessConfiguration: AWS = {
       },
     },
   },
-  functions: { getProductsList, getProductById, createProduct },
+  functions: {
+    getProductsList,
+    getProductById,
+    createProduct,
+    catalogBatchProcess,
+  },
   package: { individually: true },
   resources: {
     Resources: {
       ProductsTable,
       StocksTable,
+      CatalogProductsQueue,
+    },
+    Outputs: {
+      CatalogProductsQueueUrl: {
+        Value: '${self:custom.catalogProductsQueue.name}',
+      },
     },
   },
   custom: {
@@ -71,12 +84,16 @@ const serverlessConfiguration: AWS = {
       apiType: 'httpApi',
     },
     productsTable: {
-      name: { Ref: ['ProductsTable'] },
+      name: { Ref: 'ProductsTable' },
       arn: { 'Fn::GetAtt': ['ProductsTable', 'Arn'] },
     },
     stocksTable: {
-      name: { Ref: ['StocksTable'] },
+      name: { Ref: 'StocksTable' },
       arn: { 'Fn::GetAtt': ['StocksTable', 'Arn'] },
+    },
+    catalogProductsQueue: {
+      name: { Ref: 'CatalogProductsQueue' },
+      arn: { 'Fn::GetAtt': ['CatalogProductsQueue', 'Arn'] },
     },
   },
 };

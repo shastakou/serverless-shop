@@ -22,7 +22,7 @@ export const importFileParser = async (event: S3Event) => {
 
       await pipeline(objectStream, csvParser(), async function* (parsedLines) {
         for await (const parsedProduct of parsedLines) {
-          console.log(parsedProduct);
+          console.log(process.env.CATALOG_PRODUCTS_QUEUE_URL);
           parsedProducts.push(parsedProduct);
           yield parsedProduct;
         }
