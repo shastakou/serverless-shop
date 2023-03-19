@@ -1,6 +1,6 @@
 import { AwsIamPolicyStatements } from '@serverless/typescript';
 
-export const ProductsTableIAM: AwsIamPolicyStatements[0] = {
+const ProductsTableIAM: AwsIamPolicyStatements[0] = {
   Effect: 'Allow',
   Action: [
     'dynamodb:Scan',
@@ -11,3 +11,5 @@ export const ProductsTableIAM: AwsIamPolicyStatements[0] = {
   ],
   Resource: ['${self:custom.productsTable.arn}'],
 };
+
+export { ProductsTableIAM };

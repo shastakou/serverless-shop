@@ -5,10 +5,12 @@ import httpEventNormalizer from '@middy/http-event-normalizer';
 import httpErrorHandler from 'middy-middleware-json-error-handler';
 import cors from '@middy/http-cors';
 
-export const middyfy = (handler: Handler<any>) => {
+const middyfy = (handler: Handler<any>) => {
   return middy(handler)
     .use(httpHeaderNormalizer())
     .use(httpEventNormalizer())
     .use(cors())
     .use(httpErrorHandler());
 };
+
+export { middyfy };

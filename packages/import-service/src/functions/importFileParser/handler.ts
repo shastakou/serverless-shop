@@ -10,7 +10,7 @@ import {
 import { BUCKET, BUCKET_PARSED_PREFIX } from '@libs/constants';
 import { sendProductToQueue } from '@libs/services/sqsClient.service';
 
-export const importFileParser = async (event: S3Event) => {
+const importFileParser = async (event: S3Event) => {
   const s3Records = event.Records ?? [];
 
   for (const s3Record of s3Records) {
@@ -40,4 +40,6 @@ export const importFileParser = async (event: S3Event) => {
   }
 };
 
-export const main = importFileParser;
+const main = importFileParser;
+
+export { importFileParser, main };

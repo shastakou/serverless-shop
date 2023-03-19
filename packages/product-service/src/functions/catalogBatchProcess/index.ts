@@ -1,7 +1,7 @@
 import { AWS } from '@serverless/typescript';
-import { handlerPath } from '@libs/handlerResolver';
+import { handlerPath } from '@libs/utils/handlerResolver';
 
-export const catalogBatchProcess: AWS['functions'][''] = {
+const catalogBatchProcess: AWS['functions'][''] = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
@@ -13,3 +13,5 @@ export const catalogBatchProcess: AWS['functions'][''] = {
     },
   ],
 };
+
+export { catalogBatchProcess };

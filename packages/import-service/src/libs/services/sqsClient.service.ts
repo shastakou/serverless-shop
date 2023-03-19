@@ -9,7 +9,7 @@ import { ParsedProduct } from '../../types';
 
 const sqsClient = new SQSClient({ region: REGION });
 
-export async function sendProductToQueue(
+async function sendProductToQueue(
   product: ParsedProduct
 ): Promise<SendMessageCommandOutput> {
   const params: SendMessageCommandInput = {
@@ -18,3 +18,5 @@ export async function sendProductToQueue(
   };
   return sqsClient.send(new SendMessageCommand(params));
 }
+
+export { sendProductToQueue };

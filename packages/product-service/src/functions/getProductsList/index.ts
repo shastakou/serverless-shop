@@ -1,7 +1,7 @@
-import { handlerPath } from '@libs/handlerResolver';
+import { handlerPath } from '@libs/utils/handlerResolver';
 import { FunctionWithSwagger } from '../../types/type-utils';
 
-export const getProductsList: FunctionWithSwagger = {
+const getProductsList: FunctionWithSwagger = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
@@ -21,3 +21,5 @@ export const getProductsList: FunctionWithSwagger = {
   ],
   logRetentionInDays: 14,
 };
+
+export { getProductsList };

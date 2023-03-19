@@ -5,16 +5,16 @@ import {
   PutCommand,
   ScanCommand,
   TransactWriteCommand,
+  TransactWriteCommandInput,
+  TransactWriteCommandOutput,
 } from '@aws-sdk/lib-dynamodb';
+import { PRODUCTS_TABLE, REGION, STOCKS_TABLE } from '@libs/constants';
 import { ProductDto, StockDto } from '../../types/api-types';
 
-const PRODUCTS_TABLE = process.env.PRODUCTS_TABLE;
-const STOCKS_TABLE = process.env.STOCKS_TABLE;
-
-const ddbClient = new DynamoDBClient({ region: process.env.REGION });
+const ddbClient = new DynamoDBClient({ region: REGION });
 const ddbDocumentClient = DynamoDBDocumentClient.from(ddbClient);
 
-export async function getProductsWithStockCount(): Promise<ProductDto[]> {
+async function getProductsWithStockCount(): Promise<ProductDto[]> {
   const productsData = await ddbDocumentClient.send(
     new ScanCommand({
       TableName: PRODUCTS_TABLE,
@@ -36,7 +36,7 @@ export async function getProductsWithStockCount(): Promise<ProductDto[]> {
   return products;
 }
 
-export async function getProduct(id: string): Promise<ProductDto> {
+async function getProduct(id: string): Promise<ProductDto> {
   const data = await ddbDocumentClient.send(
     new GetCommand({
       TableName: PRODUCTS_TABLE,
@@ -46,7 +46,7 @@ export async function getProduct(id: string): Promise<ProductDto> {
   return data.Item as ProductDto;
 }
 
-export async function putProduct(product: ProductDto): Promise<ProductDto> {
+async function putProduct(product: ProductDto): Promise<ProductDto> {
   await ddbDocumentClient.send(
     new PutCommand({
       TableName: PRODUCTS_TABLE,
@@ -56,31 +56,30 @@ export async function putProduct(product: ProductDto): Promise<ProductDto> {
   return product;
 }
 
-export async function transactPutProduct(
+function transactPutProduct(
   product: ProductDto,
   stock: StockDto
-): Promise<void> {
-  await ddbDocumentClient.send(
-    new TransactWriteCommand({
-      TransactItems: [
-        {
-          Put: {
-            TableName: PRODUCTS_TABLE,
-            Item: product,
-          },
+): Promise<TransactWriteCommandOutput> {
+  const params: TransactWriteCommandInput = {
+    TransactItems: [
+      {
+        Put: {
+          TableName: PRODUCTS_TABLE,
+          Item: product,
         },
-        {
-          Put: {
-            TableName: STOCKS_TABLE,
-            Item: stock,
-          },
+      },
+      {
+        Put: {
+          TableName: STOCKS_TABLE,
+          Item: stock,
         },
-      ],
-    })
-  );
+      },
+    ],
+  };
+  return ddbDocumentClient.send(new TransactWriteCommand(params));
 }
 
-export async function getStock(productId: string): Promise<StockDto> {
+async function getStock(productId: string): Promise<StockDto> {
   const data = await ddbDocumentClient.send(
     new GetCommand({
       TableName: STOCKS_TABLE,
@@ -90,7 +89,7 @@ export async function getStock(productId: string): Promise<StockDto> {
   return data.Item as StockDto;
 }
 
-export async function putStock(stock: StockDto): Promise<StockDto> {
+async function putStock(stock: StockDto): Promise<StockDto> {
   await ddbDocumentClient.send(
     new PutCommand({
       TableName: STOCKS_TABLE,
@@ -99,3 +98,12 @@ export async function putStock(stock: StockDto): Promise<StockDto> {
   );
   return stock;
 }
+
+export {
+  getProductsWithStockCount,
+  getProduct,
+  putProduct,
+  transactPutProduct,
+  getStock,
+  putStock,
+};

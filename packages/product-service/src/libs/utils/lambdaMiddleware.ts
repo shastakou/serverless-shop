@@ -8,7 +8,7 @@ import cors from '@middy/http-cors';
 import httpSecurityHeaders from '@middy/http-security-headers';
 import inputOutputLogger from '@middy/input-output-logger';
 
-export const middyfy = (handler: Handler<any>) => {
+const middyfy = (handler: Handler<any>) => {
   return middy(handler)
     .use(httpHeaderNormalizer())
     .use(httpEventNormalizer())
@@ -18,3 +18,5 @@ export const middyfy = (handler: Handler<any>) => {
     .use(inputOutputLogger({ awsContext: true }))
     .use(httpErrorHandler());
 };
+
+export { middyfy };

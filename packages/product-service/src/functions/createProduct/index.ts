@@ -1,7 +1,7 @@
-import { handlerPath } from '@libs/handlerResolver';
+import { handlerPath } from '@libs/utils/handlerResolver';
 import { FunctionWithSwagger } from '../../types/type-utils';
 
-export const createProduct: FunctionWithSwagger = {
+const createProduct: FunctionWithSwagger = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
@@ -24,3 +24,5 @@ export const createProduct: FunctionWithSwagger = {
     },
   ],
 };
+
+export { createProduct };

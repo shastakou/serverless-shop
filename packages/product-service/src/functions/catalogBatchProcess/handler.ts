@@ -4,7 +4,7 @@ import { transactPutProduct } from '@libs/services/dbDocumentClient.service';
 import { ProductDto, StockDto, CreateProductDto } from '../../types/api-types';
 import { sendTopicMessage } from '@libs/services/snsClient.service';
 
-export const catalogBatchProcess = async (event: SQSEvent) => {
+const catalogBatchProcess = async (event: SQSEvent) => {
   let products: CreateProductDto[] = [];
 
   try {
@@ -16,8 +16,8 @@ export const catalogBatchProcess = async (event: SQSEvent) => {
 
   for (const { count, ...product } of products) {
     const productToSave: ProductDto = {
-      id: uuid(),
       ...product,
+      id: uuid(),
     };
     const stockToSave: StockDto = {
       product_id: productToSave.id,
@@ -25,11 +25,16 @@ export const catalogBatchProcess = async (event: SQSEvent) => {
     };
     try {
       await transactPutProduct(productToSave, stockToSave);
-      await sendTopicMessage(`Product [${product.title}] created!`);
     } catch (error) {
       console.error(error);
     }
   }
+
+  await sendTopicMessage(
+    'Products created!\n' + products.map((p) => `- [${p.title}]\n`).join('')
+  );
 };
 
-export const main = catalogBatchProcess;
+const main = catalogBatchProcess;
+
+export { catalogBatchProcess, main };

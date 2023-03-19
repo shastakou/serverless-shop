@@ -1,3 +1,7 @@
-export const REGION = process.env.REGION;
-export const BUCKET = process.env.BUCKET;
-export const CREATE_PRODUCT_TOPIC = process.env.CREATE_PRODUCT_TOPIC;
+const REGION = process.env.REGION;
+const BUCKET = process.env.BUCKET;
+const PRODUCTS_TABLE = process.env.PRODUCTS_TABLE;
+const STOCKS_TABLE = process.env.STOCKS_TABLE;
+const CREATE_PRODUCT_TOPIC = process.env.CREATE_PRODUCT_TOPIC;
+
+export { REGION, BUCKET, PRODUCTS_TABLE, STOCKS_TABLE, CREATE_PRODUCT_TOPIC };
