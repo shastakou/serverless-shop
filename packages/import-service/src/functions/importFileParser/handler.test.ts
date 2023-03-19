@@ -9,11 +9,16 @@ import {
   GetObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
+import { SendMessageCommand, SQSClient } from '@aws-sdk/client-sqs';
 import { sdkStreamMixin } from '@aws-sdk/util-stream-node';
 import { importFileParser } from './handler';
 import * as s3ClientService from '@libs/services/s3Client.service';
-import { BUCKET, BUCKET_UPLOADED_PREFIX } from '@libs/constants';
-import { BUCKET_PARSED_PREFIX } from '../../libs/constants/index';
+import * as sqsClientService from '@libs/services/sqsClient.service';
+import {
+  BUCKET,
+  BUCKET_UPLOADED_PREFIX,
+  BUCKET_PARSED_PREFIX,
+} from '@libs/constants';
 
 jest.mock('@libs/constants', () => ({
   BUCKET: 'import-service-products-bucket',
@@ -22,6 +27,7 @@ jest.mock('@libs/constants', () => ({
 }));
 
 const s3Client = mockClient(S3Client);
+const sqsClient = mockClient(SQSClient);
 const mockedRecord = {
   s3: {
     object: {
@@ -36,18 +42,24 @@ const mockedRecord = {
 describe('importFileParser', () => {
   beforeEach(() => {
     s3Client.reset();
+    sqsClient.reset();
+
     s3Client.on(GetObjectCommand).resolves({
       Body: sdkStreamMixin(
         createReadStream(join(__dirname, 'products.mock.csv'))
       ),
     });
+    sqsClient.on(SendMessageCommand).resolves({});
   });
 
   it('should parse incoming csv', async () => {
     const parsedLines = [];
-    jest.spyOn(console, 'log').mockImplementation((data) => {
-      parsedLines.push(data);
-    });
+    jest
+      .spyOn(sqsClientService, 'sendProductToQueue')
+      .mockImplementation((data) => {
+        parsedLines.push(data);
+        return Promise.resolve(void 0);
+      });
     const getObjectSpy = jest.spyOn(s3ClientService, 'getObject');
     const copyObjectSpy = jest.spyOn(s3ClientService, 'copyObject');
     const deleteObjectSpy = jest.spyOn(s3ClientService, 'deleteObject');
@@ -66,7 +78,7 @@ describe('importFileParser', () => {
     });
   });
 
-  it('should move file to parsed', async () => {
+  it('should move file to parsed folder', async () => {
     await importFileParser({ Records: [mockedRecord] });
     expect(s3Client).toHaveReceivedCommandWith(CopyObjectCommand, {
       Bucket: BUCKET,

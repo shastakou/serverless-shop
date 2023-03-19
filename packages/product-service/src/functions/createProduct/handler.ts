@@ -11,15 +11,17 @@ import { ProductDto, StockDto } from '../../types/api-types';
 const createProduct: ValidatedEventAPIGatewayProxyEvent<
   typeof createProductSchema
 > = async (event) => {
-  const { count = 0, ...product } = event.body;
+  const { count = 0, title, description, price } = event.body;
 
   const productToSave: ProductDto = {
-    ...product,
     id: uuid(),
+    title,
+    description,
+    price: +price,
   };
   const stockToSave: StockDto = {
     product_id: productToSave.id,
-    count,
+    count: +count,
   };
 
   await transactPutProduct(productToSave, stockToSave);

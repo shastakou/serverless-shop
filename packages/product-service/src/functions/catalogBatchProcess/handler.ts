@@ -14,25 +14,24 @@ const catalogBatchProcess = async (event: SQSEvent) => {
     return;
   }
 
-  for (const { count, ...product } of products) {
+  for (const { count, title, description, price } of products) {
     const productToSave: ProductDto = {
-      ...product,
       id: uuid(),
+      title,
+      description,
+      price: +price,
     };
     const stockToSave: StockDto = {
       product_id: productToSave.id,
-      count,
+      count: +count,
     };
     try {
       await transactPutProduct(productToSave, stockToSave);
+      await sendTopicMessage(JSON.stringify(productToSave));
     } catch (error) {
       console.error(error);
     }
   }
-
-  await sendTopicMessage(
-    'Products created!\n' + products.map((p) => `- [${p.title}]\n`).join('')
-  );
 };
 
 const main = catalogBatchProcess;
