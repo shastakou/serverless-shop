@@ -10,10 +10,15 @@ import { catalogBatchProcess } from '@functions/catalogBatchProcess';
 import { ProductsTable } from '@resources/productsTable.resource';
 import { StocksTable } from '@resources/stocksTable.resource';
 import { CatalogProductsQueue } from '@resources/catalogProductsQueue.resource';
+import {
+  CreateProductTopic,
+  CreateProductSubscription,
+} from '@resources/createProductTopic.resource';
 
 // iam policies
 import { ProductsTableIAM } from '@iam/productsTable.iam';
 import { StocksTableIAM } from '@iam/stocksTable.iam';
+import { CreateProductTopicIAM } from '@iam/createProductTopic.iam';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -38,13 +43,14 @@ const serverlessConfiguration: AWS = {
       REGION: '${self:custom.region}',
       PRODUCTS_TABLE: '${self:custom.productsTable.name}',
       STOCKS_TABLE: '${self:custom.stocksTable.name}',
+      CREATE_PRODUCT_TOPIC: '${self:custom.createProductTopic.name}',
     },
     httpApi: {
       cors: true,
     },
     iam: {
       role: {
-        statements: [ProductsTableIAM, StocksTableIAM],
+        statements: [ProductsTableIAM, StocksTableIAM, CreateProductTopicIAM],
       },
     },
   },
@@ -60,6 +66,8 @@ const serverlessConfiguration: AWS = {
       ProductsTable,
       StocksTable,
       CatalogProductsQueue,
+      CreateProductTopic,
+      CreateProductSubscription,
     },
     Outputs: {
       CatalogProductsQueueUrl: {
@@ -97,6 +105,9 @@ const serverlessConfiguration: AWS = {
     catalogProductsQueue: {
       name: { Ref: 'CatalogProductsQueue' },
       arn: { 'Fn::GetAtt': ['CatalogProductsQueue', 'Arn'] },
+    },
+    createProductTopic: {
+      name: { Ref: 'CreateProductTopic' },
     },
   },
 };

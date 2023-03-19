@@ -2,6 +2,7 @@ import { SQSEvent } from 'aws-lambda';
 import { v4 as uuid } from 'uuid';
 import { transactPutProduct } from '@libs/services/dbDocumentClient.service';
 import { ProductDto, StockDto, CreateProductDto } from '../../types/api-types';
+import { sendTopicMessage } from '@libs/services/snsClient.service';
 
 export const catalogBatchProcess = async (event: SQSEvent) => {
   let products: CreateProductDto[] = [];
@@ -24,6 +25,7 @@ export const catalogBatchProcess = async (event: SQSEvent) => {
     };
     try {
       await transactPutProduct(productToSave, stockToSave);
+      await sendTopicMessage(`Product [${product.title}] created!`);
     } catch (error) {
       console.error(error);
     }
