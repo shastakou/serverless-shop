@@ -12,7 +12,8 @@ import { StocksTable } from '@resources/stocksTable.resource';
 import { CatalogProductsQueue } from '@resources/catalogProductsQueue.resource';
 import {
   CreateProductTopic,
-  CreateProductSubscription,
+  CreateProductSubscriptionByPrice,
+  CreateProductSubscriptionByTitle,
 } from '@resources/createProductTopic.resource';
 
 // iam policies
@@ -67,7 +68,8 @@ const serverlessConfiguration: AWS = {
       StocksTable,
       CatalogProductsQueue,
       CreateProductTopic,
-      CreateProductSubscription,
+      CreateProductSubscriptionByPrice,
+      CreateProductSubscriptionByTitle,
     },
     Outputs: {
       CatalogProductsQueueUrl: {
