@@ -19,6 +19,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'eu-west-1',
+    stage: 'dev',
     deploymentMethod: 'direct',
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -54,6 +55,8 @@ const serverlessConfiguration: AWS = {
       name: { Ref: 'ProductsBucket' },
       arn: { 'Fn::GetAtt': ['ProductsBucket', 'Arn'] },
     },
+    authorizer:
+      'arn:aws:lambda:${self:provider.region}:${aws:accountId}:${param:authorizer}',
     esbuild: {
       bundle: true,
       minify: false,

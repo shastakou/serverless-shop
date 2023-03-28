@@ -16,6 +16,10 @@ const importProductsFile: FunctionWithSwagger = {
             },
           },
         },
+        authorizer: {
+          arn: '${self:custom.authorizer}',
+          type: 'TOKEN',
+        },
 
         // swagger definitions
         queryStringParameters: {

@@ -1,4 +1,4 @@
-import * as createHttpError from 'http-errors';
+import { NotFound } from 'http-errors';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/utils/apiGateway';
 import { formatJSONResponse } from '@libs/utils/apiGateway';
 import { middyfy } from '@libs/utils/lambdaMiddleware';
@@ -11,7 +11,7 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<void> = async (
   const product = await getProduct(id);
 
   if (!product) {
-    throw createHttpError.NotFound(`Product with ID "${id}" is not found!`);
+    throw NotFound(`Product with ID "${id}" is not found!`);
   }
 
   const stock = await getStock(product.id);
