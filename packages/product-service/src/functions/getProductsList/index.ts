@@ -1,7 +1,7 @@
-import { handlerPath } from '@libs/handlerResolver';
-import { AWSFunctionConfig } from '../../types/type-utils';
+import { handlerPath } from '@libs/utils/handlerResolver';
+import { FunctionWithSwagger } from '../../types/type-utils';
 
-export const getProductsList: AWSFunctionConfig = {
+const getProductsList: FunctionWithSwagger = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
@@ -21,3 +21,5 @@ export const getProductsList: AWSFunctionConfig = {
   ],
   logRetentionInDays: 14,
 };
+
+export { getProductsList };

@@ -1,6 +1,6 @@
 import { AWS } from '@serverless/typescript';
 
-export const ProductsBucket: AWS['resources']['Resources'][''] = {
+const ProductsBucket: AWS['resources']['Resources'][''] = {
   Type: 'AWS::S3::Bucket',
   Properties: {
     BucketName: 'import-service-products-bucket',
@@ -16,3 +16,5 @@ export const ProductsBucket: AWS['resources']['Resources'][''] = {
     },
   },
 };
+
+export { ProductsBucket };

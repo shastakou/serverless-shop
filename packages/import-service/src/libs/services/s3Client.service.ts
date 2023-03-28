@@ -12,18 +12,18 @@ import { BUCKET, REGION } from '../constants';
 
 const s3Client = new S3Client({ region: REGION });
 
-export async function createPresignedUrl(key: string): Promise<string> {
+async function createPresignedUrl(key: string): Promise<string> {
   const command = new PutObjectCommand({ Bucket: BUCKET, Key: key });
   return getSignedUrl(s3Client, command, { expiresIn: 3600 });
 }
 
-export async function getObject(key: string): Promise<NodeJS.ReadableStream> {
+async function getObject(key: string): Promise<NodeJS.ReadableStream> {
   const command = new GetObjectCommand({ Bucket: BUCKET, Key: key });
   const result = await s3Client.send(command);
   return result.Body as NodeJS.ReadableStream;
 }
 
-export async function copyObject(
+async function copyObject(
   sourceKey: string,
   destinationKey: string
 ): Promise<CopyObjectCommandOutput> {
@@ -36,9 +36,7 @@ export async function copyObject(
   return result;
 }
 
-export async function deleteObject(
-  key: string
-): Promise<DeleteBucketCommandOutput> {
+async function deleteObject(key: string): Promise<DeleteBucketCommandOutput> {
   const command = new DeleteObjectCommand({
     Bucket: BUCKET,
     Key: key,
@@ -46,3 +44,5 @@ export async function deleteObject(
   const result = await s3Client.send(command);
   return result;
 }
+
+export { createPresignedUrl, getObject, copyObject, deleteObject };

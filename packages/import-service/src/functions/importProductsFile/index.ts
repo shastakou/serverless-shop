@@ -1,7 +1,7 @@
 import { handlerPath } from '@libs/utils/handlerResolver';
-import { AWSFunctionConfig } from '../../types/type-utils';
+import { FunctionWithSwagger } from '../../types/type-utils';
 
-export const importProductsFile: AWSFunctionConfig = {
+const importProductsFile: FunctionWithSwagger = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   events: [
     {
@@ -37,3 +37,5 @@ export const importProductsFile: AWSFunctionConfig = {
     },
   ],
 };
+
+export { importProductsFile };

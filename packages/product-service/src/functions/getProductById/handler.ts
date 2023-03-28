@@ -1,10 +1,10 @@
 import * as createHttpError from 'http-errors';
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
-import { formatJSONResponse } from '@libs/apiGateway';
-import { middyfy } from '@libs/lambdaMiddleware';
+import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/utils/apiGateway';
+import { formatJSONResponse } from '@libs/utils/apiGateway';
+import { middyfy } from '@libs/utils/lambdaMiddleware';
 import { getProduct, getStock } from '@libs/services/dbDocumentClient.service';
 
-export const getProductById: ValidatedEventAPIGatewayProxyEvent<void> = async (
+const getProductById: ValidatedEventAPIGatewayProxyEvent<void> = async (
   event
 ) => {
   const { id } = event.pathParameters;
@@ -20,4 +20,6 @@ export const getProductById: ValidatedEventAPIGatewayProxyEvent<void> = async (
   return formatJSONResponse(product);
 };
 
-export const main = middyfy(getProductById);
+const main = middyfy(getProductById);
+
+export { getProductById, main };

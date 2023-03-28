@@ -4,14 +4,22 @@ import type { AWS } from '@serverless/typescript';
 import { getProductById } from '@functions/getProductById';
 import { getProductsList } from '@functions/getProductsList';
 import { createProduct } from '@functions/createProduct';
+import { catalogBatchProcess } from '@functions/catalogBatchProcess';
 
 // resources
 import { ProductsTable } from '@resources/productsTable.resource';
 import { StocksTable } from '@resources/stocksTable.resource';
+import { CatalogProductsQueue } from '@resources/catalogProductsQueue.resource';
+import {
+  CreateProductTopic,
+  CreateProductSubscriptionByPrice,
+  CreateProductSubscriptionByTitle,
+} from '@resources/createProductTopic.resource';
 
 // iam policies
 import { ProductsTableIAM } from '@iam/productsTable.iam';
 import { StocksTableIAM } from '@iam/stocksTable.iam';
+import { CreateProductTopicIAM } from '@iam/createProductTopic.iam';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -36,22 +44,40 @@ const serverlessConfiguration: AWS = {
       REGION: '${self:custom.region}',
       PRODUCTS_TABLE: '${self:custom.productsTable.name}',
       STOCKS_TABLE: '${self:custom.stocksTable.name}',
+      CREATE_PRODUCT_TOPIC: '${self:custom.createProductTopic.name}',
     },
     httpApi: {
       cors: true,
     },
     iam: {
       role: {
-        statements: [ProductsTableIAM, StocksTableIAM],
+        statements: [ProductsTableIAM, StocksTableIAM, CreateProductTopicIAM],
       },
     },
   },
-  functions: { getProductsList, getProductById, createProduct },
+  functions: {
+    getProductsList,
+    getProductById,
+    createProduct,
+    catalogBatchProcess,
+  },
   package: { individually: true },
   resources: {
     Resources: {
       ProductsTable,
       StocksTable,
+      CatalogProductsQueue,
+      CreateProductTopic,
+      CreateProductSubscriptionByPrice,
+      CreateProductSubscriptionByTitle,
+    },
+    Outputs: {
+      CatalogProductsQueueUrl: {
+        Value: '${self:custom.catalogProductsQueue.name}',
+      },
+      CatalogProductsQueueArn: {
+        Value: '${self:custom.catalogProductsQueue.arn}',
+      },
     },
   },
   custom: {
@@ -71,12 +97,19 @@ const serverlessConfiguration: AWS = {
       apiType: 'httpApi',
     },
     productsTable: {
-      name: { Ref: ['ProductsTable'] },
+      name: { Ref: 'ProductsTable' },
       arn: { 'Fn::GetAtt': ['ProductsTable', 'Arn'] },
     },
     stocksTable: {
-      name: { Ref: ['StocksTable'] },
+      name: { Ref: 'StocksTable' },
       arn: { 'Fn::GetAtt': ['StocksTable', 'Arn'] },
+    },
+    catalogProductsQueue: {
+      name: { Ref: 'CatalogProductsQueue' },
+      arn: { 'Fn::GetAtt': ['CatalogProductsQueue', 'Arn'] },
+    },
+    createProductTopic: {
+      name: { Ref: 'CreateProductTopic' },
     },
   },
 };

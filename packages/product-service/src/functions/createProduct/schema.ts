@@ -1,4 +1,4 @@
-export const createProductSchema = {
+const createProductSchema = {
   type: 'object',
   properties: {
     body: {
@@ -22,3 +22,5 @@ export const createProductSchema = {
   },
   required: ['body'],
 } as const;
+
+export { createProductSchema };

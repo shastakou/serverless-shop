@@ -8,8 +8,9 @@ import {
   getObject,
 } from '@libs/services/s3Client.service';
 import { BUCKET, BUCKET_PARSED_PREFIX } from '@libs/constants';
+import { sendProductToQueue } from '@libs/services/sqsClient.service';
 
-export const importFileParser = async (event: S3Event) => {
+const importFileParser = async (event: S3Event) => {
   const s3Records = event.Records ?? [];
 
   for (const s3Record of s3Records) {
@@ -17,13 +18,11 @@ export const importFileParser = async (event: S3Event) => {
     const objectKey = objectMetadata.key;
 
     try {
-      const parsedProducts = [];
       const objectStream = await getObject(objectKey);
 
       await pipeline(objectStream, csvParser(), async function* (parsedLines) {
         for await (const parsedProduct of parsedLines) {
-          console.log(parsedProduct);
-          parsedProducts.push(parsedProduct);
+          sendProductToQueue(parsedProduct);
           yield parsedProduct;
         }
       });
@@ -41,4 +40,6 @@ export const importFileParser = async (event: S3Event) => {
   }
 };
 
-export const main = importFileParser;
+const main = importFileParser;
+
+export { importFileParser, main };

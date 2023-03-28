@@ -9,6 +9,7 @@ import { ProductsBucket } from '@resources/productsBucket.resource';
 
 // iam policies
 import { ProductsBucketIAM } from '@iam/productsBucket.iam';
+import { CatalogProductsQueueIAM } from '@iam/catalogProductsQueue.iam';
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
@@ -32,10 +33,11 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       REGION: '${self:custom.region}',
       BUCKET: '${self:custom.productsBucket.name}',
+      CATALOG_PRODUCTS_QUEUE_URL: '${param:catalogProductsQueueUrl}',
     },
     iam: {
       role: {
-        statements: [ProductsBucketIAM],
+        statements: [ProductsBucketIAM, CatalogProductsQueueIAM],
       },
     },
   },

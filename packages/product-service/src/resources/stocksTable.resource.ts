@@ -1,6 +1,6 @@
 import { AWS } from '@serverless/typescript';
 
-export const StocksTable: AWS['resources']['Resources'][''] = {
+const StocksTable: AWS['resources']['Resources'][''] = {
   Type: 'AWS::DynamoDB::Table',
   DeletionPolicy: 'Delete',
   Properties: {
@@ -18,3 +18,5 @@ export const StocksTable: AWS['resources']['Resources'][''] = {
     KeySchema: [{ AttributeName: 'product_id', KeyType: 'HASH' }],
   },
 };
+
+export { StocksTable };
