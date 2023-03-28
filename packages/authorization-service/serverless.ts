@@ -32,7 +32,6 @@ const serverlessConfiguration: AWS = {
   functions: { basicAuthorizer },
   package: { individually: true },
   resources: {
-    // Resources: {},
     Outputs: {
       Authorizer: {
         Value: '${self:custom.authorizer}',

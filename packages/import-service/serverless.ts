@@ -6,6 +6,7 @@ import { importFileParser } from '@functions/importFileParser';
 
 // resources
 import { ProductsBucket } from '@resources/productsBucket.resource';
+import { UnauthorizedGatewayResponse } from '@resources/gatewayResponse.resource';
 
 // iam policies
 import { ProductsBucketIAM } from '@iam/productsBucket.iam';
@@ -47,6 +48,7 @@ const serverlessConfiguration: AWS = {
   resources: {
     Resources: {
       ProductsBucket,
+      UnauthorizedGatewayResponse,
     },
   },
   custom: {
