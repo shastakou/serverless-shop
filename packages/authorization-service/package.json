@@ -1,7 +1,7 @@
 {
-  "name": "import-service",
+  "name": "authorization-service",
   "version": "0.0.1",
-  "description": "API for import products",
+  "description": "Service for authoriation",
   "author": "Ivan Shastakou",
   "license": "MIT",
   "main": "serverless.ts",
@@ -17,16 +17,7 @@
     "info": "sls info"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.289.0",
-    "@aws-sdk/client-sqs": "^3.294.0",
-    "@aws-sdk/s3-request-presigner": "^3.289.0",
-    "@middy/core": "^4.2.7",
-    "@middy/http-cors": "^4.2.7",
-    "@middy/http-event-normalizer": "^4.2.5",
-    "@middy/http-header-normalizer": "^4.2.5",
-    "csv-parser": "^3.0.0",
-    "http-errors": "^2.0.0",
-    "middy-middleware-json-error-handler": "^3.0.0"
+    "http-errors": "^2.0.0"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
@@ -38,9 +29,7 @@
     "aws-sdk-mock": "^5.8.0",
     "esbuild": "^0.14.11",
     "jest": "^29.4.3",
-    "json-schema-to-ts": "^1.5.0",
     "serverless": "^3.0.0",
-    "serverless-auto-swagger": "^2.12.0",
     "serverless-esbuild": "^1.23.3",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.4.0",

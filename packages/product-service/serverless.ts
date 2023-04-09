@@ -29,6 +29,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'eu-west-1',
+    stage: 'dev',
     deploymentMethod: 'direct',
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -82,20 +83,6 @@ const serverlessConfiguration: AWS = {
   },
   custom: {
     region: '${opt:region, self:provider.region}',
-    esbuild: {
-      bundle: true,
-      minify: false,
-      sourcemap: true,
-      exclude: ['aws-sdk'],
-      target: 'node18',
-      define: { 'require.resolve': undefined },
-      platform: 'node',
-      concurrency: 10,
-    },
-    autoswagger: {
-      title: 'products service',
-      apiType: 'httpApi',
-    },
     productsTable: {
       name: { Ref: 'ProductsTable' },
       arn: { 'Fn::GetAtt': ['ProductsTable', 'Arn'] },
@@ -110,6 +97,20 @@ const serverlessConfiguration: AWS = {
     },
     createProductTopic: {
       name: { Ref: 'CreateProductTopic' },
+    },
+    autoswagger: {
+      title: 'products service',
+      apiType: 'httpApi',
+    },
+    esbuild: {
+      bundle: true,
+      minify: false,
+      sourcemap: true,
+      exclude: ['aws-sdk'],
+      target: 'node18',
+      define: { 'require.resolve': undefined },
+      platform: 'node',
+      concurrency: 10,
     },
   },
 };
