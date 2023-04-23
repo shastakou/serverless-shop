@@ -1,13 +1,12 @@
 {
   "name": "product-service",
   "version": "0.0.1",
-  "description": "API for products",
+  "description": "Service to process products",
   "author": "Ivan Shastakou",
   "license": "MIT",
-  "main": "serverless.ts",
   "engines": {
-    "npm": ">=9.6.2",
-    "node": ">=18.13.0"
+    "node": "^18",
+    "npm": "^9"
   },
   "scripts": {
     "test": "jest --watch",

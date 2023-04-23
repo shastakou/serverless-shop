@@ -4,19 +4,19 @@
   "description": "Serverless app",
   "author": "Ivan Shastakou",
   "license": "MIT",
-  "main": "serverless-compose.ts",
   "engines": {
-    "npm": ">=9.6.2",
-    "node": ">=18.13.0"
+    "node": "^18",
+    "npm": "^9"
   },
   "workspaces": [
     "packages/import-service",
     "packages/product-service",
-    "packages/authorization-service"
+    "packages/authorization-service",
+    "packages/bff-service"
   ],
   "scripts": {
     "test": "npm run test:ci --workspaces",
-    "deploy": "sls deploy --verbose",
+    "deploy": "sls deploy --verbose && npm run deploy --workspace=packages/bff-service ",
     "info": "sls info"
   },
   "devDependencies": {
