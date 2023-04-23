@@ -1,7 +1,7 @@
 {
   "name": "authorization-service",
   "version": "0.0.1",
-  "description": "Service for authoriation",
+  "description": "Service to manage authorization",
   "author": "Ivan Shastakou",
   "license": "MIT",
   "main": "serverless.ts",

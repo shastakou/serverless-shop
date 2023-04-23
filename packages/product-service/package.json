@@ -1,7 +1,7 @@
 {
   "name": "product-service",
   "version": "0.0.1",
-  "description": "API for products",
+  "description": "Service to process products",
   "author": "Ivan Shastakou",
   "license": "MIT",
   "main": "serverless.ts",

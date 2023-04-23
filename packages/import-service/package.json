@@ -1,7 +1,7 @@
 {
   "name": "import-service",
   "version": "0.0.1",
-  "description": "API for import products",
+  "description": "Service to import products",
   "author": "Ivan Shastakou",
   "license": "MIT",
   "main": "serverless.ts",
