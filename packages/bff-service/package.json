@@ -22,7 +22,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "eb-init": "eb init shastakou-bff-service --platform node.js --region eu-west-1",
-    "eb-create": "eb create development --single --cname shastakou-bff-service-dev",
+    "eb-create": "eb create shastakou-bff-service-dev --single --cname shastakou-bff-service-dev",
     "eb-terminate": "eb terminate",
     "deploy": "eb deploy"
   },

@@ -23,9 +23,11 @@ export class AppController {
   constructor(private readonly httpService: HttpService) {}
 
   @Get('health')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   health() {
-    return;
+    return {
+      message: 'OK',
+    };
   }
 
   @UseGuards(RouteGuard)

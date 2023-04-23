@@ -4,10 +4,9 @@
   "description": "Serverless app",
   "author": "Ivan Shastakou",
   "license": "MIT",
-  "main": "serverless-compose.ts",
   "engines": {
-    "npm": ">=9.6.2",
-    "node": ">=18.13.0"
+    "node": "^18",
+    "npm": "^9"
   },
   "workspaces": [
     "packages/import-service",
